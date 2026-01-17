@@ -29,7 +29,7 @@ input:-webkit-autofill:active {
   overflow: hidden;
 }
 
-/* LAYER 1: BACKGROUND */
+/* LAYER 1: BACKGROUND - REVERTED TO STANDARD */
 .bg-layer {
   position: absolute;
   top: 0;
@@ -37,9 +37,16 @@ input:-webkit-autofill:active {
   width: 100%;
   height: 100%;
   background-size: cover;
+  
+  /* REVERTED: Back to the classic center alignment */
   background-position: center;
+  
   transition: background-image 0.5s ease-in-out;
   z-index: -1; 
+  
+  /* REVERTED: Standard scale, no zoom hacks */
+  transform: scale(1); 
+  
   filter: contrast(1.35) saturate(1.8) brightness(0.9);
 }
 
@@ -77,7 +84,10 @@ input:-webkit-autofill:active {
   height: 100%;
   position: relative;
   transform-style: preserve-3d;
-  transition: transform 2.5s cubic-bezier(0.4, 0.0, 0.2, 1);
+  
+  /* MIDDLE GROUND SPEED: 1.8s (Balanced) */
+  transition: transform 1.8s cubic-bezier(0.4, 0.0, 0.2, 1);
+  
   z-index: 50; 
 }
 
@@ -118,25 +128,31 @@ input:-webkit-autofill:active {
 /* --- 4. LANDING PAGE ELEMENTS --- */
 .landing-header-image {
   position: absolute;
-  top: 15%; 
+  top: 18%; /* Reverted to classic position */
   left: 50%;
   transform: translateX(-50%);
-  width: 85vw; 
+  width: 90vw; 
   max-width: 800px;
   z-index: 5; 
   pointer-events: none;
-  transition: all 1.2s ease-in-out; 
+  
+  /* MIDDLE GROUND SPEED: 0.8s */
+  transition: all 0.8s ease-in-out; 
+  
   opacity: 1;
   filter: blur(0px);
 }
 
 .max-character {
   position: absolute;
-  top: 5%; 
+  top: 7%; 
   left: 50%;
   transform: translateX(-50%);
-  width: 380px; 
-  transition: transform 3s ease-in;
+  width: 400px; 
+  
+  /* MIDDLE GROUND SPEED: 2s */
+  transition: transform 2s ease-in;
+  
   z-index: 30; 
   filter: drop-shadow(0 10px 10px rgba(0,0,0,0.5));
   transform: translateX(-50%) translateZ(1px);
@@ -150,13 +166,13 @@ input:-webkit-autofill:active {
 /* --- SEARCH BAR (Landing) --- */
 .search-box {
   position: absolute;
-  top: 70%; 
+  top: 72.5%; /* Reverted to classic position */
   left: 50%;
   transform: translateX(-50%) translateZ(0px);
   z-index: 60; 
-  width: 85%;
-  max-width: 700px;
-  height: 60px; 
+  width: 90%;
+  max-width: 750px;
+  height: 65px; 
   border-radius: 35px; 
   background: rgba(255, 255, 255, 0.12); 
   backdrop-filter: blur(15px); 
@@ -500,30 +516,27 @@ input::placeholder {
 .error-container {
   position: relative; 
   width: 100%;
-  height: 80vh; /* Fill the screen */
+  height: 80vh; 
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center; /* Center Text vertically */
+  justify-content: center; 
   text-align: center;
   color: #ff0000;
-  overflow: hidden; /* Cut off the monster's legs if too big */
+  overflow: hidden; 
 }
 
-/* THE MONSTER */
 .demogorgon-error {
   position: absolute;
-  bottom: -5vh; /* Grounded at bottom */
+  bottom: -5vh; 
   left: 50%;
   transform: translateX(-50%);
-  height: 85vh; /* MASSIVE HEIGHT */
+  height: 85vh; 
   width: auto;
-  min-width: 600px; /* Ensure it's wide enough */
-  z-index: 1; /* Behind Text */
+  min-width: 600px; 
+  z-index: 1; 
   opacity: 0.9;
   filter: drop-shadow(0 0 50px #000);
-  
-  /* Menacing Pulse Animation */
   animation: menacing-pulse 4s ease-in-out infinite;
 }
 
@@ -533,11 +546,10 @@ input::placeholder {
   100% { transform: translateX(-50%) scale(1); filter: brightness(0.8); }
 }
 
-/* TEXT WRAPPER (ON TOP OF MONSTER) */
 .error-content-wrapper {
   position: relative;
-  z-index: 10; /* Must be higher than monster */
-  background: radial-gradient(circle, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 70%); /* Readability */
+  z-index: 10; 
+  background: radial-gradient(circle, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 70%); 
   padding: 40px;
   border-radius: 50%;
 }

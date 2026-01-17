@@ -83,13 +83,15 @@ export default function App() {
     const cleaned = cleanInput(query);
     
     setIsFloating(true);
+    // MIDDLE GROUND SPEED: Flip starts at 1.2s
     setTimeout(() => {
       setIsFlipped(true); 
-    }, 2000);
+    }, 1200);
+    // MIDDLE GROUND SPEED: World changes at 2.5s
     setTimeout(() => {
       setIsUpsideDown(true);
       searchGithub(cleaned, 1); 
-    }, 3250); 
+    }, 2500); 
   };
 
   const handleReset = () => {
@@ -272,7 +274,6 @@ export default function App() {
              {/* --- ERROR CONTAINER (THE ABYSS) --- */}
              {errorType && (
                <div className="error-container">
-                 {/* DEMOGORGON IMAGE BEHIND TEXT */}
                  <img src={demogorgonImage} className="demogorgon-error" alt="The Demogorgon" />
                  
                  <div className="error-content-wrapper">
@@ -289,36 +290,51 @@ export default function App() {
                </div>
              )}
 
-             {/* --- CARDS GRID --- */}
+             {/* --- MAIN CONTENT & EMPTY STATE HANDLING --- */}
              {!errorType && (
                <>
-                 <div className="cards-grid">
-                   {processedRepos.map((repo, index) => (
-                     <div 
-                       key={`${repo.id}-${index}`} 
-                       className="repo-card"
-                       onClick={() => window.open(repo.html_url, '_blank')}
-                       style={{ cursor: 'pointer' }}
-                     >
-                       <h3>{repo.name}</h3>
-                       <p>{repo.description || "Secrets lost in the void..."}</p>
-                       <div className="repo-stats">
-                         <span>⭐ {repo.stargazers_count}</span>
-                         <span>🍴 {repo.forks_count}</span>
-                         <span>🔤 {repo.language}</span>
-                       </div>
-                     </div>
-                   ))}
-                   {loading && (
-                     <>
-                       <div className="skeleton-card"></div>
-                       <div className="skeleton-card"></div>
-                       <div className="skeleton-card"></div>
-                       <div className="skeleton-card"></div>
-                     </>
-                   )}
-                 </div>
-                 {hasMore && !filterQuery && !loading && (
+                 {/* CASE: NO REPOS FOUND (The "Limbo" State Fix) */}
+                 {!loading && repos.length === 0 ? (
+                    <div className="error-container">
+                        <h2 className="error-title">THE VOID IS EMPTY</h2>
+                        <p className="error-msg">
+                            The user "{cleanInput(query)}" exists, but has no public repositories to show.
+                        </p>
+                        <button className="escape-btn" onClick={handleReset}>RETURN HOME</button>
+                    </div>
+                 ) : (
+                    /* CASE: REPOS FOUND (Normal Grid) */
+                    <div className="cards-grid">
+                        {processedRepos.map((repo, index) => (
+                            <div 
+                            key={`${repo.id}-${index}`} 
+                            className="repo-card"
+                            onClick={() => window.open(repo.html_url, '_blank')}
+                            style={{ cursor: 'pointer' }}
+                            >
+                            <h3>{repo.name}</h3>
+                            <p>{repo.description || "Secrets lost in the void..."}</p>
+                            <div className="repo-stats">
+                                <span>⭐ {repo.stargazers_count}</span>
+                                <span>🍴 {repo.forks_count}</span>
+                                <span>🔤 {repo.language}</span>
+                            </div>
+                            </div>
+                        ))}
+                        {/* Loading Skeletons */}
+                        {loading && (
+                            <>
+                            <div className="skeleton-card"></div>
+                            <div className="skeleton-card"></div>
+                            <div className="skeleton-card"></div>
+                            <div className="skeleton-card"></div>
+                            </>
+                        )}
+                    </div>
+                 )}
+
+                 {/* Infinite Scroll Sensor */}
+                 {hasMore && !filterQuery && !loading && repos.length > 0 && (
                    <div ref={sensorRef} className="loading-sensor"></div>
                  )}
                </>
@@ -327,7 +343,7 @@ export default function App() {
         )}
       </div> 
 
-      {/* --- MODALS (Same as before) --- */}
+      {/* --- MODALS --- */}
       {showStats && (
         <div className="modal-overlay" onClick={() => setShowStats(false)}>
           <div className="modal-content" onClick={e => e.stopPropagation()}>
