@@ -655,3 +655,41 @@ input::placeholder {
   color: #fff;
   font-family: 'DM Sans', sans-serif;
 }
+/* --- MOBILE BLOCKER (SAVE YOUR TIME) --- */
+@media screen and (max-width: 1024px) {
+  /* Hide the actual app on small screens/tablets */
+  .app-container {
+    display: none !important;
+  }
+
+  /* Show a scary message instead */
+  body {
+    background: #000;
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  body::after {
+    content: "STRANGER GIT \A \A The Upside Down is too powerful for this device. \A \A Please access via PC/Mac.";
+    white-space: pre-wrap;
+    color: #ff0000;
+    font-family: 'Creepster', cursive;
+    font-size: 2rem;
+    text-align: center;
+    padding: 20px;
+    line-height: 1.5;
+    text-shadow: 0 0 20px #ff0000;
+    animation: text-flicker 3s infinite;
+  }
+}
+
+@keyframes text-flicker {
+  0% { opacity: 1; }
+  5% { opacity: 0.1; }
+  10% { opacity: 1; }
+  100% { opacity: 1; }
+}
